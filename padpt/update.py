@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import csv
+from urllib import request
+import os
+import tqdm
+
+
+def update_data(url, monsters_csv, icons):
+    with request.urlopen('{url}/monsters.csv'.format(
+            url=url)) as updated_monsters,\
+         open(monsters_csv, 'w') as monsters:
+        monsters.write(updated_monsters.read().decode('utf-8'))
+    with open(monsters_csv) as monsters:
+        for monster_id in tqdm.tqdm(tuple(
+                monster['monster_id']
+                for monster in csv.DictReader(monsters))):
+            with request.urlopen(
+                    '{url}/icons/{icon}.jpg'.format(
+                        url=url,
+                        icon=monster_id)) as updated_icon,\
+                 open(
+                     os.path.join(
+                         icons,
+                         '{icon:0>4}.jpg'.format(icon=monster_id)),
+                     'wb') as icon:
+                icon.write(updated_icon.read())

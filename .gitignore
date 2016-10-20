@@ -1,0 +1,8 @@
+*.pyc
+/PadPT.egg-info
+/build
+/dist
+/padpt/__pycache__
+/padpt/data/db
+/tests/__pycache__
+/tests/out
