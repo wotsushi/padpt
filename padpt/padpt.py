@@ -43,6 +43,8 @@ def main():
                 'data',
                 resource)
         if args.update:
+            if not os.path.exists(get_data_path('db/icons')):
+                os.makedirs(get_data_path('db/icons'))
             update.update_data(
                 padpt_conf['PadPT']['DB_URL'],
                 get_data_path('db/monsters.csv'),
