@@ -27,11 +27,11 @@ Here,
 
 |Element                |Mean                                              |
 |:----------------------|:-------------------------------------------------|
-|title                  |title (e.g., dungeon name)                        |
-|former party           |party A                                           |
-|later party            |party B                                           |
-|note                   |walkthrough                                       |
-|member                 |monster name and assist monster name if any       |
+|Title                  |title (e.g., dungeon name)                        |
+|The former party       |party A                                           |
+|The later party        |party B                                           |
+|Note                   |walkthrough                                       |
+|Member                 |monster name and assist monster name if any       |
 
 For example,
 
@@ -58,23 +58,6 @@ For example,
     7F: Bディオス
     8F: A0コンボ，Bタナトス，A0コンボ，B0コンボ，A0コンボ，Bディオス
 
-If you want to generate a sheet for solo, you can write as folllows:
-
-    金曜ダンジョン（超地獄）
-
-    ヤマトタケル
-    ハンジ
-    赤オーディン
-    赤オーディン
-    五右衛門
-
-    ヤマトタケル
-
-    1F: ハンジ，赤オーディン
-    2F: 赤オーディン
-    3F: 五右衛門
-    4F: 崩す
-
 ## Output
 Output files are png format.
 Output files have the following information:
@@ -90,7 +73,7 @@ Output files have the following information:
  * Resistance-dark
 * Note/Walkthrough
 
-For example, PadPT outputs the following sheet from the first input example:
+For example, PadPT outputs the following sheet from the input example:
 
 ![out](./docs/example.png)
 
@@ -99,32 +82,32 @@ For example, PadPT outputs the following sheet from the first input example:
 * Pillow 3.3.0
 
 ## Config
-You can configure the following items by editing files in ~/.padpt/:
-* Monster name alias
-* Font
-* Database URL for update
+Edit config files in ~/.padpt/ before using PadPT.
+The config files are following:
+* alias.csv
+* padpt.conf
 
-Note: config files must be encoded in UTF-8.
+Note: the config files must be encoded in UTF-8.
 
-### Monster Name Alias
-You can configure monster name alias by editing ~/.padpt/alias.csv.
+### alias.csv
+Configure monster name alias by editing ~/.padpt/alias.csv.
 Records in the csv follow the below format:
 
-    <monster>,<natural number that may be suppressed 0>
+    <monster>,<natural number>
 
 For example,
 
     覚醒劉備,2903
     ディオス,2948
-    タナトス,0923
+    タナトス,923
 
 Note that there must not exist two or more than records
 that have the same monster name (the first element).
 The natural number (the second element) is the monster number.
 The number must be consistent with database.
 
-### Others
-You can configure font in output sheets, database URL for update
+### padpt.conf
+Configure font used in output sheets, database URL for update
 by editing ~/.padpt/padpt.conf.
 The conf file follows the below format:
 
@@ -151,7 +134,7 @@ An example of conf/padpt.conf is shown below,
 
 ## Script Usage
 ### Output a Sheet
-Let *x* be an input text file and *y* be an output png file. Then,
+Let x be an input text file and y be an output png file. Then,
 
     padpt x y
 
@@ -159,9 +142,10 @@ Let *x* be an input text file and *y* be an output png file. Then,
 
     padpt -u
 
-You can specify the update option, input file, and output file.
-So the following usage is right where *x* is an input text file and
-*y* be an output png file.
+You can specify the update option, an input file,
+and an output file at the same time.
+So the following command is valid where x is an input text file and
+y be an output png file.
 
     padpt -u x y
 
