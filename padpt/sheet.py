@@ -82,37 +82,35 @@ def generate_sheet(pt, timestamp, font_path, png_path, out_path):
         font_size=36)
     timestamp_img = new_txtimg(timestamp)
     party_a_img = _join_h(
-        imgs=(
-            open_png('A'),
-            *(_join_v(
-                imgs=(Image.open(member.monster.icon_path),)
-                if member.assist is None
-                else (Image.open(member.assist.icon_path),
-                      open_png('extend_a'),
-                      Image.open(member.monster.icon_path)),
-                align_ratio=1/2) for member in pt.party_a)),
+        imgs=(open_png('A'),
+              *(_join_v(
+                  imgs=(Image.open(member.monster.icon_path),)
+                  if member.assist is None
+                  else (Image.open(member.assist.icon_path),
+                        open_png('extend_a'),
+                        Image.open(member.monster.icon_path)),
+                  align_ratio=1/2)
+                for member in pt.party_a)),
         align_ratio=1)
     party_b_img = _join_h(
-        imgs=(
-            open_png('B'),
-            *(_join_v(
-                imgs=(Image.open(member.monster.icon_path),)
-                if member.assist is None
-                else (Image.open(member.monster.icon_path),
-                      open_png('extend_b'),
-                      Image.open(member.assist.icon_path)),
-                align_ratio=1/2) for member in pt.party_b)),
+        imgs=(open_png('B'),
+              *(_join_v(
+                  imgs=(Image.open(member.monster.icon_path),)
+                  if member.assist is None
+                  else (Image.open(member.monster.icon_path),
+                        open_png('extend_b'),
+                        Image.open(member.assist.icon_path)),
+                  align_ratio=1/2)
+                for member in pt.party_b)),
         align_ratio=0)
     awoken_skills_img = _join_v(tuple(
         _join_h(
-            imgs=(
-                open_png(awoken_skill),
-                new_txtimg(str(sum(map(
-                    operator.attrgetter(awoken_skill),
-                    (member.monster.awoken_skills
-                     for member in itertools.chain(
-                             pt.party_a,
-                             pt.party_b))))))),
+            imgs=(open_png(awoken_skill), new_txtimg(str(sum(map(
+                operator.attrgetter(awoken_skill),
+                (member.monster.awoken_skills
+                 for member in itertools.chain(
+                         pt.party_a,
+                         pt.party_b))))))),
             align_ratio=1/2)
         for awoken_skill in padptdb.AwokenSkills._fields))
     note_img = new_txtimg(pt.note)
@@ -121,10 +119,11 @@ def generate_sheet(pt, timestamp, font_path, png_path, out_path):
         title_img,
         timestamp_img,
         _join_h(
-            imgs=(_join_v((
-                party_a_img,
-                party_b_img)),
-                  awoken_skills_img),
+            imgs=(
+                _join_v((
+                    party_a_img,
+                    party_b_img)),
+                awoken_skills_img),
             align_ratio=1/2),
         note_img))
     sheet.save(out_path, 'PNG')

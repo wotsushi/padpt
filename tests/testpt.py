@@ -15,7 +15,10 @@ class TestPT(unittest.TestCase):
         self.alias = conf.read_alias('tests/.padpt/alias.csv')
 
     def test_parse_pt_00(self):
-        mill_pt = pt.parse_pt('tests/in/mill.pt', self.alias, self.monsters)
+        mill_pt = pt.parse_pt(
+            'tests/in/mill.pt',
+            self.alias,
+            self.monsters)
         self.assertEqual(
             mill_pt,
             pt.PT(
@@ -62,7 +65,10 @@ class TestPT(unittest.TestCase):
                       '8F: A0コンボ，Bタナトス，A0コンボ，B0コンボ，A0コンボ，Bディオス\n')))
 
     def test_parse_pt_01(self):
-        friday_pt = pt.parse_pt('tests/in/friday.pt', self.alias, self.monsters)
+        friday_pt = pt.parse_pt(
+            'tests/in/friday.pt',
+            self.alias,
+            self.monsters)
         self.assertEqual(
             friday_pt,
             pt.PT(

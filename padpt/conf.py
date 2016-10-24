@@ -21,5 +21,6 @@ def read_alias(alias_csv_path):
     Then returns a dict mapping from alias to monster id.
     """
     with open(alias_csv_path) as alias_csv:
-        return {alias: int(monster_id)
-                for alias, monster_id in csv.reader(alias_csv)}
+        return {
+            alias: int(monster_id)
+            for alias, monster_id in csv.reader(alias_csv)}

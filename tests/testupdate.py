@@ -23,11 +23,15 @@ class TestUpdate(unittest.TestCase):
             monsters_csv=monsters_csv,
             icons=icons)
         with open(monsters_csv) as monsters:
-            for monster_id in (monster['monster_id']
-                               for monster in csv.DictReader(monsters)):
-                self.assertTrue(os.path.exists(os.path.join(
-                    icons,
-                    '{icon:0>4}.jpg'.format(icon=monster_id))))
+            for monster_id in (
+                    monster['monster_id']
+                    for monster in csv.DictReader(monsters)):
+                self.assertTrue(
+                    os.path.exists(
+                        os.path.join(
+                            icons,
+                            '{icon:0>4}.jpg'.format(icon=monster_id))))
+
 
 if __name__ == '__main__':
     unittest.main()

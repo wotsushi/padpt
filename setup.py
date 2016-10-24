@@ -28,8 +28,7 @@ def main():
         padpt = padpt.padpt:main
         """,
         data_files=(('padpt/data/png', glob.glob('padpt/data/png/*.png')),),
-        test_suite='tests'
-    )
+        test_suite='tests')
     if not os.path.exists(os.path.expanduser('~/.padpt')):
         shutil.copytree('.padpt', os.path.expanduser('~/.padpt'))
 

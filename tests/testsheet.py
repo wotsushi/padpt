@@ -93,9 +93,10 @@ class TestSheet(unittest.TestCase):
                         pt.Member(
                             monster=self.monsters[2006],
                             assist=None)),
-                    party_b=(pt.Member(
-                        monster=self.monsters[2657],
-                        assist=None),),
+                    party_b=(
+                        pt.Member(
+                            monster=self.monsters[2657],
+                            assist=None),),
                     note=('1F: ハンジ，赤オーディン\n'
                           '2F: 赤オーディン\n'
                           '3F: 五右衛門\n'

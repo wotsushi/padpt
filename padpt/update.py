@@ -8,8 +8,9 @@ import tqdm
 
 
 def update_data(url, monsters_csv, icons):
-    with request.urlopen('{url}/monsters.csv'.format(
-            url=url)) as updated_monsters,\
+    with request.urlopen(
+            '{url}/monsters.csv'.format(
+                url=url)) as updated_monsters,\
          open(monsters_csv, 'w') as monsters:
         monsters.write(updated_monsters.read().decode('utf-8'))
     with open(monsters_csv) as monsters:

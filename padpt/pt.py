@@ -9,17 +9,13 @@ import re
 
 Member = collections.namedtuple(
     'Member',
-    ('monster',
-     'assist'))
+    ('monster', 'assist'))
 
 Member.__new__.__defaults__ = (None,)
 
 PT = collections.namedtuple(
     'PT',
-    ('title',
-     'party_a',
-     'party_b',
-     'note'))
+    ('title', 'party_a', 'party_b', 'note'))
 
 _NOTE = r'((.|\n)*)'
 _NAMECHAR = r'([^\n,])'
@@ -42,14 +38,18 @@ def parse_pt(pt_path, alias, monsters):
             r'\n'
             r'(?P<party_b>{party})'
             r'\n'
-            r'(?P<note>{note})'.format(title=_TITLE, party=_PARTY, note=_NOTE),
+            r'(?P<note>{note})'.format(
+                title=_TITLE,
+                party=_PARTY,
+                note=_NOTE),
             pt.read())
 
     def parse_party(party):
-        return tuple(Member(*(
-            monsters[alias[monster_name]]
-            for monster_name in member.split(',')))
-                     for member in party.rstrip().splitlines())
+        return tuple(
+            Member(*(
+                monsters[alias[monster_name]]
+                for monster_name in member.split(',')))
+            for member in party.rstrip().splitlines())
 
     return PT(
         title=tokens.group('title'),
