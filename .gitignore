@@ -6,3 +6,4 @@
 /padpt/data/db
 /tests/__pycache__
 /tests/out
+!.gitkeep

@@ -17,6 +17,10 @@ from padpt import padpt
 class TestPadPT(unittest.TestCase):
 
     def setUp(self):
+        if os.path.exists('tests/tmp'):
+            shutil.rmtree('tests/tmp')
+        os.mkdir('tests/tmp')
+
         self.conf_dir = os.path.join(
             os.path.expanduser('~'),
             '.padpt/')
@@ -27,10 +31,27 @@ class TestPadPT(unittest.TestCase):
             'tests/.padpt',
             self.conf_dir)
 
+        self.db_dir = os.path.join(
+            os.path.dirname(sys.modules['padpt'].__file__),
+            'data/db')
+        if not os.path.exists(self.db_dir):
+            os.mkdir(self.db_dir)
+        shutil.move(
+            self.db_dir,
+            'tests/tmp/data/db')
+        shutil.copytree(
+            'tests/data/db',
+            self.db_dir)
+
     def tearDown(self):
+        shutil.rmtree(self.conf_dir)
         shutil.move(
             'tests/tmp/.padpt',
             self.conf_dir)
+        shutil.rmtree(self.db_dir)
+        shutil.move(
+            'tests/tmp/data/db',
+            self.db_dir)
 
     @patch.object(
         sys,
