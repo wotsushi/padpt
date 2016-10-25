@@ -15,9 +15,11 @@ class TestUpdate(unittest.TestCase):
         url = 'http://localhost/db'
         monsters_csv = 'tests/out/db/monsters.csv'
         icons = 'tests/out/db/icons'
-        os.remove(monsters_csv)
-        shutil.rmtree(icons)
-        os.mkdir(icons)
+        if os.path.exists(monsters_csv):
+            os.remove(monsters_csv)
+        if os.path.exists(icons):
+            shutil.rmtree(icons)
+        os.makedirs(icons)
         update.update_data(
             url=url,
             monsters_csv=monsters_csv,
