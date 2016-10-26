@@ -1,5 +1,7 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+"""This module updates data files.
+"""
 
 import csv
 from urllib import request
@@ -8,6 +10,9 @@ import tqdm
 
 
 def update_data(url, monsters_csv, icons):
+    """Updates the specified csv file and icon files from
+    the specified URL.
+    """
     with request.urlopen(
             '{url}/monsters.csv'.format(
                 url=url)) as updated_monsters,\
