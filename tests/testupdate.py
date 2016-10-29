@@ -13,25 +13,25 @@ class TestUpdate(unittest.TestCase):
 
     def test_update_00(self):
         url = 'http://localhost/db'
-        monsters_csv = 'tests/out/db/monsters.csv'
-        icons = 'tests/out/db/icons'
-        if os.path.exists(monsters_csv):
-            os.remove(monsters_csv)
-        if os.path.exists(icons):
-            shutil.rmtree(icons)
-        os.makedirs(icons)
+        monsters_csv_path = 'tests/out/db/monsters.csv'
+        icons_dir = 'tests/out/db/icons'
+        if os.path.exists(monsters_csv_path):
+            os.remove(monsters_csv_path)
+        if os.path.exists(icons_dir):
+            shutil.rmtree(icons_dir)
+        os.makedirs(icons_dir)
         update.update_data(
-            url=url,
-            monsters_csv=monsters_csv,
-            icons=icons)
-        with open(monsters_csv) as monsters:
+            url,
+            monsters_csv_path,
+            icons_dir)
+        with open(monsters_csv_path) as monsters:
             for monster_id in (
                     monster['monster_id']
                     for monster in csv.DictReader(monsters)):
                 self.assertTrue(
                     os.path.exists(
                         os.path.join(
-                            icons,
+                            icons_dir,
                             '{icon:0>4}.jpg'.format(icon=monster_id))))
 
 

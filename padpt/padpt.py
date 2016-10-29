@@ -35,8 +35,7 @@ def main():
     else:
         def get_conf_path(resource):
             return os.path.join(
-                os.path.expanduser('~'),
-                '.padpt',
+                os.path.expanduser('~/.padpt'),
                 resource)
         padpt_conf = conf.read_conf(get_conf_path('padpt.conf'))
 
@@ -45,26 +44,30 @@ def main():
                 os.path.dirname(sys.modules['padpt'].__file__),
                 'data',
                 resource)
+
+        monsters_csv_path = get_data_path('db/monsters.csv')
+        icons_dir = get_data_path('db/icons')
         if args.update:
-            if not os.path.exists(get_data_path('db/icons')):
-                os.makedirs(get_data_path('db/icons'))
+            if not os.path.exists(icons_dir):
+                os.makedirs(icons_dir)
             update.update_data(
-                padpt_conf['PadPT']['DB_URL'],
-                get_data_path('db/monsters.csv'),
-                get_data_path('db/icons'))
+                url=padpt_conf['PadPT']['DB_URL'],
+                monsters_csv_path=monsters_csv_path,
+                icons_dir=icons_dir)
         if args.pt is not None:
             sheet.generate_sheet(
                 pt=pt.parse_pt(
                     pt_path=args.pt,
                     alias=conf.read_alias(get_conf_path('alias.csv')),
                     monsters=padptdb.read_monsters(
-                        get_data_path('db/monsters.csv'),
-                        get_data_path('db/icons'))),
+                        monsters_csv_path,
+                        icons_dir)),
                 timestamp=str(datetime.date.today()),
                 font_path=padpt_conf['PadPT']['Font'],
                 png_path=get_data_path('png'),
-                out_path=args.out if args.out is not None
-                else os.path.splitext(args.pt)[0]+'.png')
+                out_path=(
+                    args.out if args.out is not None
+                    else os.path.splitext(args.pt)[0]+'.png'))
 
 if __name__ == '__main__':
     main()
