@@ -7,6 +7,7 @@ import io
 import shutil
 import warnings
 import unittest
+import urllib.error
 from unittest.mock import patch
 
 from PIL import Image
@@ -75,8 +76,7 @@ class TestPadPT(unittest.TestCase):
             '\n'
             'optional arguments:\n'
             '  -h, --help    show this help message and exit\n'
-            '  -u, --update  updates database\n'
-        )
+            '  -u, --update  updates database\n')
 
     @patch.object(
         sys,
@@ -104,6 +104,144 @@ class TestPadPT(unittest.TestCase):
             self.assertEqual(
                 'y',
                 input('OK? [y/n]'))
+
+    @patch.object(
+        sys,
+        'argv',
+        ['padpt', '_.pt', '_.png'])
+    def test_main_03(self):
+        padpt_conf = os.path.join(
+            self.conf_dir,
+            'padpt.conf')
+        os.remove(padpt_conf)
+        try:
+            padpt.main()
+        except SystemExit as e:
+            self.assertEqual(
+                str(e),
+                '{} does not exist.'.format(padpt_conf))
+
+    @patch.object(
+        sys,
+        'argv',
+        ['padpt', '_.pt', '_.png'])
+    def test_main_04(self):
+        shutil.copy(
+            'tests/.padpt/padpterror.conf',
+            os.path.join(
+                self.conf_dir,
+                'padpt.conf'))
+        try:
+            padpt.main()
+        except SystemExit as e:
+            self.assertEqual(
+                str(e),
+                'There is an error in padpt.conf')
+
+    @patch.object(
+        sys,
+        'argv',
+        ['padpt', '-u'])
+    def test_main_05(self):
+        shutil.copy(
+            'tests/.padpt/padpt_keyerror.conf',
+            os.path.join(
+                self.conf_dir,
+                'padpt.conf'))
+        try:
+            padpt.main()
+        except SystemExit as e:
+            self.assertEqual(
+                str(e),
+                'There is an error in padpt.conf')
+
+    @patch.object(
+        sys,
+        'argv',
+        ['padpt', '-u'])
+    def test_main_06(self):
+        shutil.copy(
+            'tests/.padpt/padpt_urlerror.conf',
+            os.path.join(
+                self.conf_dir,
+                'padpt.conf'))
+        try:
+            padpt.main()
+        except SystemExit as e:
+            self.assertEqual(
+                str(e),
+                'Failed to download http://padpt_test')
+
+    @patch.object(
+        sys,
+        'argv',
+        ['padpt', 'none.pt'])
+    def test_main_07(self):
+        try:
+            padpt.main()
+        except SystemExit as e:
+            self.assertEqual(
+                str(e),
+                'none.pt does not exist.')
+
+    @patch.object(
+        sys,
+        'argv',
+        ['padpt', 'tests/in/pterror.pt'])
+    def test_main_08(self):
+        try:
+            padpt.main()
+        except SystemExit as e:
+            self.assertEqual(
+                str(e),
+                'tests/in/pterror.pt has a syntax error.')
+
+    @patch.object(
+        sys,
+        'argv',
+        ['padpt', 'tests/in/aliaserror.pt'])
+    def test_main_09(self):
+        try:
+            padpt.main()
+        except SystemExit as e:
+            self.assertEqual(
+                str(e),
+                '覚醒エラー is undefined in alias.csv.')
+
+    @patch.object(
+        sys,
+        'argv',
+        ['padpt', 'tests/in/mill.pt'])
+    def test_main_10(self):
+        shutil.copy(
+            'tests/data/db/monstererror.csv',
+            os.path.join(
+                self.db_dir,
+                'monsters.csv'))
+        try:
+            padpt.main()
+        except SystemExit as e:
+            self.assertEqual(
+                str(e),
+                'The monster whose monster ID is 2903'
+                'is not registerd with your monster DB.')
+
+    @patch.object(
+        sys,
+        'argv',
+        ['padpt', 'tests/in/mill.pt'])
+    def test_main_11(self):
+        shutil.copy(
+            'tests/.padpt/padpt_keyerror.conf',
+            os.path.join(
+                self.conf_dir,
+                'padpt.conf'))
+        try:
+            padpt.main()
+        except SystemExit as e:
+            self.assertEqual(
+                str(e),
+                'There is an error in padpt.conf')
 
 if __name__ == '__main__':
     unittest.main()

@@ -14,6 +14,21 @@ class TestPT(unittest.TestCase):
             'tests/data/db/icons')
         self.alias = conf.read_alias('tests/.padpt/alias.csv')
 
+    def test_PTError_00(self):
+        self.assertEqual(
+            str(pt.PTError('tests/in/mill.pt')),
+            'tests/in/mill.pt has a syntax error.')
+
+    def test_AliasError_00(self):
+        self.assertEqual(
+            pt.AliasError('覚醒劉備').get_name(),
+            '覚醒劉備')
+
+    def test_MonsterError_00(self):
+        self.assertEqual(
+            pt.MonsterError(2903).get_monster_id(),
+            2903)
+
     def test_parse_pt_00(self):
         mill_pt = pt.parse_pt(
             'tests/in/mill.pt',
@@ -96,6 +111,31 @@ class TestPT(unittest.TestCase):
                       '2F: 赤オーディン\n'
                       '3F: 五右衛門\n'
                       '4F: 崩す\n')))
+
+    def test_parse_pt_02(self):
+        """Assume that tests/in/pterror.pt does not exist.
+        """
+        with self.assertRaises(pt.PTError):
+            mill_pt = pt.parse_pt(
+                pt_path='tests/in/pterror.pt',
+                alias=self.alias,
+                monsters=self.monsters)
+
+    def test_parse_pt_03(self):
+        with self.assertRaises(pt.AliasError):
+            mill_pt = pt.parse_pt(
+                pt_path='tests/in/aliaserror.pt',
+                alias=self.alias,
+                monsters=self.monsters)
+
+    def test_parse_pt_04(self):
+        with self.assertRaises(pt.MonsterError):
+            mill_pt = pt.parse_pt(
+                pt_path='tests/in/mill.pt',
+                alias=self.alias,
+                monsters=padptdb.read_monsters(
+                    'tests/data/db/monstererror.csv',
+                    'tests/data/db/icons'))
 
 if __name__ == '__main__':
     unittest.main()

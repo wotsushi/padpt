@@ -15,7 +15,7 @@ class TestConf(unittest.TestCase):
             '/System/Library/Fonts/ヒラギノ角ゴ ProN W6.otf')
         self.assertEqual(
             config['PadPT']['DB_URL'],
-            'http://www.foo.jp/padpt')
+            'http://localhost/db')
 
     def test_read_alias_00(self):
         alias = conf.read_alias('tests/.padpt/alias.csv')

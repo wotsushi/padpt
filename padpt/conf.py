@@ -12,8 +12,9 @@ def read_conf(conf_path):
     Then returns a configparser for padpt.conf.
     """
     config_parser = configparser.ConfigParser()
-    config_parser.read(conf_path)
-    return config_parser
+    with open(conf_path) as conf:
+        config_parser.read_file(conf)
+        return config_parser
 
 
 def read_alias(alias_csv_path):
